@@ -3,6 +3,7 @@ import 'package:muslim/Features/azkar/presentation/Views/azkar_view.dart';
 import 'package:muslim/Features/elquran/presentation/Views/quran_view.dart';
 import 'package:muslim/Features/Home/home_view_muslim.dart';
 import 'package:muslim/Features/hadith/presentation/View/hadith_view.dart';
+import 'package:muslim/screen_test.dart';
 
 const kPathNameSurah = 'assets/json/surahs.json';
 const kPathSurah = 'json/Quran Suras/';
@@ -16,7 +17,7 @@ final List<Widget> pages = [
   const HomeViewMuslim(),
   const QuranView(),
   const HadithView(),
-  const AzkarView()
+  const CourseDetailsScreen()
 ];
 
 int hadithCount = 0;
