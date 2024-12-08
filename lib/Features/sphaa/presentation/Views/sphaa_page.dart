@@ -27,9 +27,27 @@ class SPhaaPage extends StatelessWidget {
   }
 }
 
-class SphaaPageBody extends StatelessWidget {
+class SphaaPageBody extends StatefulWidget {
   const SphaaPageBody({super.key, required this.title});
   final String title;
+
+  @override
+  State<SphaaPageBody> createState() => _SphaaPageBodyState();
+}
+
+class _SphaaPageBodyState extends State<SphaaPageBody> {
+  int currentCount = 0;
+  int totalCount = 33;
+
+  String titleFinish = '';
+  void onCount() {
+    setState(() {
+      if (currentCount != totalCount) {
+        currentCount++;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -38,13 +56,13 @@ class SphaaPageBody extends StatelessWidget {
           padding: const EdgeInsets.only(top: 16),
           child: Column(
             children: [
-              CardSphaaPage(title: title),
+              CardSphaaPage(title: widget.title),
               const SizedBox(height: 16),
-              countSection(),
+              countSection(currentCount, totalCount),
               const Spacer(),
               // إزالة الزر المتحرك من العمود
 
-              buttonRestart(),
+              buttonRestart(currentCount),
               const SizedBox(
                 height: 100,
               )
@@ -53,31 +71,34 @@ class SphaaPageBody extends StatelessWidget {
         ),
 
         // الزر المتحرك في منتصف الشاشة
-        const Padding(
-          padding: EdgeInsets.only(top: 120),
-          child: Center(child: SphaaButton()),
+        Padding(
+          padding: const EdgeInsets.only(top: 120),
+          child: Center(
+              child: SphaaButton(
+            onTap: onCount,
+          )),
         ),
       ],
     );
   }
 
-  Row countSection() {
-    return const Row(
+  Row countSection(int currentCount, int totalCount) {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Text(
-          'عدد الحبات\n 0',
+          'عدد الحبات\n\n ${totalCount.toString()}',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontFamily: 'cairo',
             fontSize: 20,
           ),
         ),
         Text(
-          'العدد الحالي \n 0',
+          'العدد الحالي \n\n ${currentCount.toString()}',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontFamily: 'cairo',
             fontSize: 20,
@@ -135,7 +156,8 @@ class CardSphaaPage extends StatelessWidget {
 }
 
 class SphaaButton extends StatefulWidget {
-  const SphaaButton({super.key});
+  final void Function() onTap;
+  const SphaaButton({super.key, required this.onTap});
 
   @override
   State<SphaaButton> createState() => _SphaaButtonState();
@@ -156,9 +178,16 @@ class _SphaaButtonState extends State<SphaaButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (_) => onButtonPressed(true), // عند بدء الضغط
-      onTapUp: (_) => onButtonPressed(false), // عند رفع الضغط
-      onTapCancel: () => onButtonPressed(false), // عند إلغاء الضغط
+      onTap: widget.onTap,
+      onTapDown: (_) {
+        onButtonPressed(true);
+      }, // عند بدء الضغط
+      onTapUp: (_) {
+        onButtonPressed(false);
+      }, // عند رفع الضغط
+      onTapCancel: () {
+        onButtonPressed(false);
+      }, // عند إلغاء الضغط
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300), // وقت الحركة
         curve: Curves.easeOut, // نوع الحركة
@@ -223,7 +252,7 @@ class _SphaaButtonState extends State<SphaaButton> {
   }
 }
 
-Widget buttonRestart() {
+Widget buttonRestart(int currentCount) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 8),
     child: ElevatedButton(
@@ -233,7 +262,9 @@ Widget buttonRestart() {
             borderRadius: BorderRadius.circular(8),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          currentCount = 0;
+        },
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
