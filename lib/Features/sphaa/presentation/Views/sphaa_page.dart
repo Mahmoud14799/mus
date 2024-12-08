@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:muslim/core/utils/constantes.dart';
 
 class SPhaaPage extends StatelessWidget {
-  const SPhaaPage({super.key});
-
+  const SPhaaPage({super.key, required this.title});
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,14 +20,16 @@ class SPhaaPage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: const Color(0xff193834),
       ),
-      body: const SphaaPageBody(),
+      body: SphaaPageBody(
+        title: title,
+      ),
     );
   }
 }
 
 class SphaaPageBody extends StatelessWidget {
-  const SphaaPageBody({super.key});
-
+  const SphaaPageBody({super.key, required this.title});
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -36,7 +38,7 @@ class SphaaPageBody extends StatelessWidget {
           padding: const EdgeInsets.only(top: 16),
           child: Column(
             children: [
-              const CardSphaaPage(),
+              CardSphaaPage(title: title),
               const SizedBox(height: 16),
               countSection(),
               const Spacer(),
@@ -89,8 +91,9 @@ class SphaaPageBody extends StatelessWidget {
 class CardSphaaPage extends StatelessWidget {
   const CardSphaaPage({
     super.key,
+    required this.title,
   });
-
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -100,26 +103,26 @@ class CardSphaaPage extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       color: const Color(0xff152625),
       elevation: 2,
-      child: const SizedBox(
+      child: SizedBox(
         height: 120, // طول الكارد
         child: Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Icon(
+              const Icon(
                   size: 30,
                   Icons.arrow_circle_left_outlined,
                   color: Colors.white),
               Text(
-                'الحمد لله',
-                style: TextStyle(
+                title,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontFamily: 'title',
                 ),
               ),
-              Icon(
+              const Icon(
                   size: 30,
                   Icons.arrow_circle_right_outlined,
                   color: Colors.white),

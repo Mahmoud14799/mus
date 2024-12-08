@@ -15,7 +15,9 @@ class cardSphaa extends StatelessWidget {
     return InkWell(
       onTap: () =>
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return const SPhaaPage();
+        return SPhaaPage(
+          title: title,
+        );
       })),
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),

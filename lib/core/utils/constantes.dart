@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:muslim/Features/azkar/presentation/Views/azkar_view.dart';
 import 'package:muslim/Features/elquran/presentation/Views/quran_view.dart';
 import 'package:muslim/Features/Home/home_view_muslim.dart';
 import 'package:muslim/Features/hadith/presentation/View/hadith_view.dart';
