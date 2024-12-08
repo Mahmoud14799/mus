@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:muslim/Features/hadith/presentation/View/widget/nested_scrol_view_hadith.dart';
 import 'package:muslim/core/utils/constantes.dart';
 
@@ -8,22 +9,20 @@ class HadithView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xffb0d3cb),
+        backgroundColor: const Color(0xff14453c),
         appBar: appBar(),
         body: const NestedScrollViewHadith());
   }
 
   AppBar appBar() {
     return AppBar(
-      forceMaterialTransparency: true,
-      backgroundColor: const Color(0xffb0d3cb),
+      backgroundColor: kColorSecondary,
       centerTitle: true,
       title: const Text(
         'حديث شريف ',
         style: TextStyle(
           fontFamily: 'Cairo',
           fontSize: 20,
-          color: kColorPrimary,
         ),
       ),
     );

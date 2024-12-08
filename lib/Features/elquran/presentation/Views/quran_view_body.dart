@@ -112,7 +112,7 @@ AppBar appBar() {
   return AppBar(
     toolbarHeight: 60,
     forceMaterialTransparency: true,
-    backgroundColor: const Color(0xffb0d3cb),
+    backgroundColor: const Color(0xff14453c),
     centerTitle: true,
     title: const Text(
       'القران الكريم',
