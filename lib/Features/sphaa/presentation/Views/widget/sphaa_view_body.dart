@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:muslim/Features/sphaa/data/sphaa_model.dart';
 import 'package:muslim/Features/sphaa/presentation/Views/widget/card_sphaa_view.dart';
 
 class SphaaViewBody extends StatelessWidget {
@@ -10,15 +11,15 @@ class SphaaViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
-      child: ListView(
-        children: const [
-          cardSphaa(
-            title: 'الحمد لله',
-          ),
-          cardSphaa(title: 'سبحان الله'),
-          cardSphaa(title: 'الله اكبر'),
-          cardSphaa(title: 'استغفر الله العظيم'),
-        ],
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: sphaaList.length,
+        itemBuilder: (context, index) {
+          var sphaa = sphaaList[index];
+          return cardSphaa(
+            sphaaModel: sphaa,
+          );
+        },
       ),
     );
   }

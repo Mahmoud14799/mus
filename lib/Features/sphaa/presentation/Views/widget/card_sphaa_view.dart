@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:muslim/Features/sphaa/data/sphaa_model.dart';
 import 'package:muslim/Features/sphaa/presentation/Views/sphaa_page.dart';
 
 class cardSphaa extends StatelessWidget {
   const cardSphaa({
     super.key,
-    required this.title,
     this.onTap,
+    required this.sphaaModel,
   });
   final void Function()? onTap;
-  final String title;
+  final SphaaModel sphaaModel;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class cardSphaa extends StatelessWidget {
       onTap: () =>
           Navigator.push(context, MaterialPageRoute(builder: (context) {
         return SPhaaPage(
-          title: title,
+          sphaaModel: sphaaModel,
         );
       })),
       child: Card(
@@ -31,7 +32,7 @@ class cardSphaa extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  title,
+                  sphaaModel.title,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
