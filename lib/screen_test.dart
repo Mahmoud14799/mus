@@ -23,7 +23,7 @@ class CourseDetailsScreen extends StatelessWidget {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                    'assets/images/image_card/alexandra-75FHrnA1-fg-unsplash.jpg'),
+                    'assets/images/image_card/alexandra-75FHrnA1-fg-unsplash (5).webp'),
                 fit: BoxFit.fitHeight, // تجعل الصورة تغطي الشاشة بالكامل
               ),
             ),
