@@ -11,6 +11,7 @@ const kImageCardPath = 'assets/images/card.webp';
 const Color kColorPrimary = Color(0xff1c302f);
 const Color kColorSecondary = Color(0xffb0d3cb);
 const Color kColorTertiary = Color(0xffb0d3cb);
+const Color kColorAppBar = Color(0xff193834);
 
 final List<Widget> pages = [
   const HomeViewMuslim(),
