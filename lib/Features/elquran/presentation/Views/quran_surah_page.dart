@@ -1,8 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:muslim/Features/elquran/presentation/Views/Widget/basmallah.dart';
 import 'package:muslim/Features/elquran/presentation/Views/Widget/header_widget.dart';
 import 'package:muslim/core/utils/constantes.dart';
@@ -103,151 +102,271 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
-      body: PageView.builder(
-        padEnds: false,
-        reverse: true,
-        scrollDirection: Axis.horizontal,
-        onPageChanged: (value) async {
-          setState(() {
-            index = value;
-            saveLastReadPage(value);
-            saveLastNameSurah(sortedList[getPageData(index)[0]["surah"] - 1]);
-          });
-        },
-        controller: _pageController,
-        itemCount: totalPagesCount + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Container(
-              color: const Color(0xffFFFCE7),
-              child: Image.asset(
-                "assets/images/Basmala.png",
-                fit: BoxFit.fitWidth,
-              ),
-            );
-          }
-          return Container(
-            // padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
-            // height: screenSize.height * .5,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Scaffold(
-              resizeToAvoidBottomInset: false,
-              backgroundColor: kColorPrimary,
-              body: SafeArea(
-                  child: Padding(
-                padding: const EdgeInsets.only(
-                  right: 11.0,
-                  left: 11,
-                ),
-                child: Column(
-                  children: [
-                    appBar(screenSize, context, index, sortedList),
-                    if ((index == 1 || index == 2))
-                      SizedBox(
-                        height: (screenSize.height * .15),
-                      ),
-                    Expanded(
-                      child: Directionality(
-                        textDirection: m.TextDirection.rtl,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: SizedBox(
-                            width: double.infinity,
-                            child: RichText(
-                              key: richTextKeys[index - 1],
-                              textDirection: m.TextDirection.rtl,
-                              textAlign:
-                                  (index == 1 || index == 2 || index == 570)
-                                      ? TextAlign.center
-                                      : TextAlign.center,
-                              softWrap: true,
-                              locale: const Locale('ar'),
-                              text: TextSpan(
-                                  style: TextStyle(
-                                    color: m.Colors.white,
-                                    fontSize: 23.sp.toDouble(),
+      body: GestureDetector(
+        onTap: () {
+          showModalBottomSheet(
+            barrierColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (BuildContext context) {
+              return Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Material(
+                  elevation: 4,
+                  borderRadius: BorderRadius.circular(10),
+                  color: kColorSecondary,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: 40,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: kColorPrimary, width: 1),
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                              ),
+                              child: const Row(
+                                children: [
+                                  Icon(FontAwesomeIcons.solidBookmark),
+                                  Text(' حفظ علامه '),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 45,
+                              width: 300,
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(18)),
+                                color: kColorPrimary,
+                              ),
+                              child: const Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    color: Colors.white,
                                   ),
-                                  children: getPageData(index).expand((e) {
-                                    List<InlineSpan> spans = [];
-                                    for (var i = e['start'];
-                                        i <= e["end"];
-                                        i++) {
-                                      // Header
-                                      if (i == 1) {
-                                        spans.add(WidgetSpan(
-                                          child: HeaderWidget(
-                                            e: e,
-                                          ),
-                                        ));
-                                        if (index == 1 && i == 1) {
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    'ابحث عن ايه',
+                                    style: TextStyle(
+                                        wordSpacing: 5,
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                        fontFamily: 'title'),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const Divider(
+                        thickness: 1,
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.navigate_next),
+                        title: const Text('الانتقال إلى صفحة'),
+                        onTap: () {
+                          // فتح نافذة لتحديد الصفحة
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: const Text('إعدادات إضافية'),
+                        onTap: () {
+                          // فتح إعدادات أخرى
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: const Text('إعدادات إضافية'),
+                        onTap: () {
+                          // فتح إعدادات أخرى
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: const Text('إعدادات إضافية'),
+                        onTap: () {
+                          // فتح إعدادات أخرى
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.settings),
+                        title: const Text('إعدادات إضافية'),
+                        onTap: () {
+                          // فتح إعدادات أخرى
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        child: PageView.builder(
+          padEnds: false,
+          reverse: true,
+          scrollDirection: Axis.horizontal,
+          onPageChanged: (value) async {
+            setState(() {
+              index = value;
+              saveLastReadPage(value);
+              saveLastNameSurah(sortedList[getPageData(index)[0]["surah"] - 1]);
+            });
+          },
+          controller: _pageController,
+          itemCount: totalPagesCount + 1,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Container(
+                color: const Color(0xffFFFCE7),
+                child: Image.asset(
+                  "assets/images/Basmala.png",
+                  fit: BoxFit.fitWidth,
+                ),
+              );
+            }
+            return Container(
+              // padding: const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0.0),
+              // height: screenSize.height * .5,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: Scaffold(
+                resizeToAvoidBottomInset: false,
+                backgroundColor: kColorPrimary,
+                body: SafeArea(
+                    child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 11.0,
+                    left: 11,
+                  ),
+                  child: Column(
+                    children: [
+                      appBar(screenSize, context, index, sortedList),
+                      if ((index == 1 || index == 2))
+                        SizedBox(
+                          height: (screenSize.height * .15),
+                        ),
+                      Expanded(
+                        child: Directionality(
+                          textDirection: m.TextDirection.rtl,
+                          child: Padding(
+                            padding: const EdgeInsets.all(0.0),
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: RichText(
+                                key: richTextKeys[index - 1],
+                                textDirection: m.TextDirection.rtl,
+                                textAlign:
+                                    (index == 1 || index == 2 || index == 570)
+                                        ? TextAlign.center
+                                        : TextAlign.center,
+                                softWrap: true,
+                                locale: const Locale('ar'),
+                                text: TextSpan(
+                                    style: TextStyle(
+                                      color: m.Colors.white,
+                                      fontSize: 23.sp.toDouble(),
+                                    ),
+                                    children: getPageData(index).expand((e) {
+                                      List<InlineSpan> spans = [];
+                                      for (var i = e['start'];
+                                          i <= e["end"];
+                                          i++) {
+                                        // Header
+                                        if (i == 1) {
                                           spans.add(WidgetSpan(
-                                              child: Container(
-                                            width: 50,
-                                          )));
-                                          spans.add(TextSpan(
-                                              text: getVerseQCF(e["surah"], i),
-                                              style: const TextStyle(
-                                                  fontFamily: "QCF_P001")));
-                                          spans.add(WidgetSpan(
-                                              child: Container(
-                                            width: 30,
-                                          )));
-                                          continue;
-                                        }
-                                        if (index != 187 && index != 1) {
-                                          spans.add(const WidgetSpan(
-                                            child: Basmallah(index: 0),
-                                          ));
-                                        }
-                                        if (index == 187) {
-                                          spans.add(WidgetSpan(
-                                            child: Container(
-                                              height: 5.h,
+                                            child: HeaderWidget(
+                                              e: e,
                                             ),
                                           ));
+                                          if (index == 1 && i == 1) {
+                                            spans.add(WidgetSpan(
+                                                child: Container(
+                                              width: 50,
+                                            )));
+                                            spans.add(TextSpan(
+                                                text:
+                                                    getVerseQCF(e["surah"], i),
+                                                style: const TextStyle(
+                                                    fontFamily: "QCF_P001")));
+                                            spans.add(WidgetSpan(
+                                                child: Container(
+                                              width: 30,
+                                            )));
+                                            continue;
+                                          }
+                                          if (index != 187 && index != 1) {
+                                            spans.add(const WidgetSpan(
+                                              child: Basmallah(index: 0),
+                                            ));
+                                          }
+                                          if (index == 187) {
+                                            spans.add(WidgetSpan(
+                                              child: Container(
+                                                height: 5.h,
+                                              ),
+                                            ));
+                                          }
                                         }
-                                      }
 
-                                      spans.add(TextSpan(
-                                        text: i == e['start']
-                                            ? "${getVerseQCF(e["surah"], i).replaceAll(" ", "").substring(0, 1)}\u200A${getVerseQCF(e["surah"], i).replaceAll(" ", "").substring(1)}"
-                                            : getVerseQCF(e["surah"], i)
-                                                .replaceAll(' ', ''),
-                                        style: TextStyle(
-                                          color: Colors.white70,
-                                          height: (index == 1 || index == 2)
-                                              ? 1.30.h
-                                              : 1.8.h,
-                                          letterSpacing: 0,
-                                          wordSpacing: 0,
-                                          fontFamily:
-                                              "QCF_P${index.toString().padLeft(3, "0")}",
-                                          fontSize: index == 1 || index == 2
-                                              ? 33.sp
-                                              : index == 145 || index == 201
-                                                  ? index == 532 || index == 533
-                                                      ? 22.5.sp
-                                                      : 23.4.sp
-                                                  : 23.1.sp,
-                                          backgroundColor: Colors.transparent,
-                                        ),
-                                      ));
-                                    }
-                                    return spans;
-                                  }).toList()),
+                                        spans.add(TextSpan(
+                                          text: i == e['start']
+                                              ? "${getVerseQCF(e["surah"], i).replaceAll(" ", "").substring(0, 1)}\u200A${getVerseQCF(e["surah"], i).replaceAll(" ", "").substring(1)}"
+                                              : getVerseQCF(e["surah"], i)
+                                                  .replaceAll(' ', ''),
+                                          style: TextStyle(
+                                            color: Colors.white70,
+                                            height: (index == 1 || index == 2)
+                                                ? 1.30.h
+                                                : 1.8.h,
+                                            letterSpacing: 0,
+                                            wordSpacing: 0,
+                                            fontFamily:
+                                                "QCF_P${index.toString().padLeft(3, "0")}",
+                                            fontSize: index == 1 || index == 2
+                                                ? 33.sp
+                                                : index == 145 || index == 201
+                                                    ? index == 532 ||
+                                                            index == 533
+                                                        ? 22.5.sp
+                                                        : 23.4.sp
+                                                    : 23.1.sp,
+                                            backgroundColor: Colors.transparent,
+                                          ),
+                                        ));
+                                      }
+                                      return spans;
+                                    }).toList()),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
-                ),
-              )),
-            ),
-          );
-        },
+                      )
+                    ],
+                  ),
+                )),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -324,4 +443,47 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
       ),
     );
   }
+}
+
+void showSettings(BuildContext context) {
+  showModalBottomSheet(
+    barrierColor: Colors.transparent,
+    elevation: 0,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(40.0)),
+    ),
+    backgroundColor: kColorTertiary,
+    context: context,
+    builder: (BuildContext context) {
+      return Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.search),
+              title: const Text('بحث عن آية'),
+              onTap: () {
+                // الانتقال إلى صفحة البحث
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.navigate_next),
+              title: const Text('الانتقال إلى صفحة'),
+              onTap: () {
+                // فتح نافذة لتحديد الصفحة
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('إعدادات إضافية'),
+              onTap: () {
+                // فتح إعدادات أخرى
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
