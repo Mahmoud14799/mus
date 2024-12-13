@@ -11,6 +11,7 @@ import 'package:muslim/Features/prayer_times/presentation/manger/cubit/prayer_ti
 import 'package:muslim/Features/prayer_times/presentation/prayer_time_widget.dart';
 import 'package:muslim/core/utils/constantes.dart';
 import 'package:muslim/core/utils/load_json_asset.dart';
+import 'package:muslim/core/utils/surah_name_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeViewMuslim extends StatefulWidget {
@@ -25,7 +26,7 @@ class _HomeViewMuslimState extends State<HomeViewMuslim> {
   int currentPage = 0;
   var lastReadPage;
   String? surahName;
-  String? lastSurahName;
+  String? lastSurahName = sortedList[0];
   List<dynamic>? widgetJsonData;
   final QuranService quranService = QuranService();
 
@@ -34,6 +35,7 @@ class _HomeViewMuslimState extends State<HomeViewMuslim> {
     super.initState();
     loadSurahs();
     loadLastReadPage();
+
     // precacheImage(const AssetImage("assets/images/card.webp"), context);
   }
 
@@ -68,99 +70,120 @@ class _HomeViewMuslimState extends State<HomeViewMuslim> {
       body: Container(
         width: double.infinity,
         color: kColorPrimary,
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  alignment: Alignment.centerLeft,
+                  image: AssetImage('assets/images/download (1).webp'),
+                  fit: BoxFit.fitHeight, // تجعل الصورة تغطي الشاشة بالكامل
+                ),
               ),
-              SizedBox(
-                width: 30, // السماح للنص بأخذ كل العرض المتاح
-                child: FittedBox(
-                  fit: BoxFit.contain, // ضبط النص ليتناسب مع المساحة
-                  alignment: Alignment.center, // محاذاة النص في المركز
-                  child: Text(
-                    'K',
-                    style: TextStyle(
-                        fontSize: 40.sp,
-                        fontFamily: 'islamic',
-                        color: const Color(0xffd3b358)),
+            ),
+            Stack(children: [
+              Container(
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      kColorPrimary.withOpacity(1),
+                      kColorPrimary.withOpacity(.9),
+                      kColorPrimary.withOpacity(1),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                 ),
               ),
-              dateSection(),
-              SizedBox(
-                height: 200.h,
-                child: PageView(
-                  reverse: true,
-                  controller: _pageController,
-                  onPageChanged: (value) => setState(() => currentPage = value),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    evintCard(
-                      surahName: surahName ?? lastSurahName,
-                      context: context,
-                      jsonData: widgetJsonData,
-                      lastReadPage: lastReadPage,
-                      lastSurahName: lastSurahName,
-                      onNavigateToQuran: (page) async {
-                        await saveLastReadPage(page);
-                        await saveLastReadPageName(
-                            lastSurahName!); // حفظ آخر صفحة
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => QuranSurahPage(
-                              lastPage: page,
-                              jsonData: widgetJsonData,
-                              surahName: surahName,
-                              lastPageName: lastSurahName,
-                            ),
-                          ),
-                        ).then((_) => loadLastReadPage());
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 45,
+                  ),
+                  dateSection(),
+                  SizedBox(
+                    height: 200.h,
+                    child: PageView(
+                      reverse: true,
+                      controller: _pageController,
+                      onPageChanged: (value) =>
+                          setState(() => currentPage = value),
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        evintCard(
+                          surahName: surahName,
+                          context: context,
+                          jsonData: widgetJsonData,
+                          lastReadPage: lastReadPage,
+                          lastSurahName: lastSurahName,
+                          onNavigateToQuran: (page) async {
+                            await saveLastReadPage(page);
+                            await saveLastReadPageName(
+                                lastSurahName ?? sortedList[0]); // حفظ آخر صفحة
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => QuranSurahPage(
+                                  pageNumber: 1,
+                                  lastPage: page,
+                                  jsonData: widgetJsonData,
+                                  surahName: surahName,
+                                  lastPageName: lastSurahName,
+                                ),
+                              ),
+                            ).then((_) => loadLastReadPage());
+                          },
+                        ),
+                        evintCard(),
+                        evintCard(),
+                        evintCard()
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  DotSwitch(
+                    totalPages: 4,
+                    currentPage: currentPage,
+                  ),
+                  const SizedBox(height: 20),
+                  BlocProvider(
+                    create: (context) => PrayerTimesCubit(),
+                    child: const PrayerTimeWidget(),
+                  ),
+                  const Divider(
+                    indent: 30,
+                    endIndent: 30,
+                    color: Color(0xffdbb859),
+                    thickness: .5,
+                  ),
+                  Expanded(
+                    child: GridView.builder(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      itemCount: 4, // عدد الكروت
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: .5.h,
+                        crossAxisSpacing: .5 / .60,
+                        childAspectRatio: 2 / 1.7,
+                      ),
+                      itemBuilder: (context, index) {
+                        final card = CardData[index];
+                        return CustomCardSection(
+                          screen: card.screen,
+                          image: card.image,
+                          title: card.title,
+                        ); // بناء الكارتات ديناميكيًا
                       },
                     ),
-                    evintCard(),
-                    evintCard(),
-                    evintCard()
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              DotSwitch(
-                totalPages: 4,
-                currentPage: currentPage,
-              ),
-              const SizedBox(height: 20),
-              BlocProvider(
-                create: (context) => PrayerTimesCubit(),
-                child: const PrayerTimeWidget(),
-              ),
-              Expanded(
-                child: GridView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 8.w),
-                  itemCount: 4, // عدد الكروت
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: .5.h,
-                    crossAxisSpacing: .5 / .60,
-                    childAspectRatio: 2 / 1.7,
                   ),
-                  itemBuilder: (context, index) {
-                    final card = CardData[index];
-                    return CustomCardSection(
-                      screen: card.screen,
-                      image: card.image,
-                      title: card.title,
-                    ); // بناء الكارتات ديناميكيًا
-                  },
-                ),
+                ],
               ),
-            ],
-          ),
+            ]),
+          ],
         ),
       ),
     );

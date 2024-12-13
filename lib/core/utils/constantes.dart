@@ -12,6 +12,8 @@ const Color kColorPrimary = Color(0xff1c302f);
 const Color kColorSecondary = Color(0xffb0d3cb);
 const Color kColorTertiary = Color(0xffb0d3cb);
 const Color kColorAppBar = Color(0xff193834);
+const Color kColorTextYalow = Color(0xffdbb859);
+const Color kColorPrimary2 = Color(0xff14453c);
 
 final List<Widget> pages = [
   const HomeViewMuslim(),

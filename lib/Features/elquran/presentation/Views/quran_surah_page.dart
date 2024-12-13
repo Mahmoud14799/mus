@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as m;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:muslim/Features/elquran/presentation/Views/Widget/basmallah.dart';
 import 'package:muslim/Features/elquran/presentation/Views/Widget/header_widget.dart';
+import 'package:muslim/Features/elquran/presentation/Views/search_ayah_view.dart';
 import 'package:muslim/core/utils/constantes.dart';
 import 'package:muslim/core/utils/surah_name_list.dart';
 import 'package:quran/quran.dart';
@@ -38,7 +38,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
   setIndex() {
     setState(() {
       index = widget.pageNumber ?? widget.lastPage;
-      name = widget.surahName ?? widget.lastPageName;
+      name = widget.surahName ?? widget.lastPageName ?? sortedList[0];
     });
   }
 
@@ -64,7 +64,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
     int savedPage = prefs.getInt('lastReadPage') ??
         widget.pageNumber ??
         widget.lastPage ??
-        0;
+        1;
 
     setState(() {
       index = savedPage;
@@ -74,10 +74,8 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
 
   Future<void> loadLastReadPageName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String savedPageName = prefs.getString('surahName') ??
-        widget.surahName ??
-        widget.lastPageName ??
-        'لا توجد';
+    String savedPageName =
+        prefs.getString('surahName') ?? widget.surahName ?? widget.lastPageName;
 
     setState(() {
       name = savedPageName;
@@ -104,120 +102,7 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          showModalBottomSheet(
-            barrierColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-            context: context,
-            builder: (BuildContext context) {
-              return Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Material(
-                  elevation: 4,
-                  borderRadius: BorderRadius.circular(10),
-                  color: kColorSecondary,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              height: 40,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: kColorPrimary, width: 1),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                              child: const Row(
-                                children: [
-                                  Icon(FontAwesomeIcons.solidBookmark),
-                                  Text(' حفظ علامه '),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 45,
-                              width: 300,
-                              decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(18)),
-                                color: kColorPrimary,
-                              ),
-                              child: const Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: [
-                                  Icon(
-                                    Icons.search,
-                                    color: Colors.white,
-                                  ),
-                                  SizedBox(
-                                    width: 20,
-                                  ),
-                                  Text(
-                                    'ابحث عن ايه',
-                                    style: TextStyle(
-                                        wordSpacing: 5,
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                        fontFamily: 'title'),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.navigate_next),
-                        title: const Text('الانتقال إلى صفحة'),
-                        onTap: () {
-                          // فتح نافذة لتحديد الصفحة
-                        },
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text('إعدادات إضافية'),
-                        onTap: () {
-                          // فتح إعدادات أخرى
-                        },
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text('إعدادات إضافية'),
-                        onTap: () {
-                          // فتح إعدادات أخرى
-                        },
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text('إعدادات إضافية'),
-                        onTap: () {
-                          // فتح إعدادات أخرى
-                        },
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text('إعدادات إضافية'),
-                        onTap: () {
-                          // فتح إعدادات أخرى
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
+          customBottomSheet(context);
         },
         child: PageView.builder(
           padEnds: false,
@@ -445,43 +330,243 @@ class _QuranSurahPageState extends State<QuranSurahPage> {
   }
 }
 
-void showSettings(BuildContext context) {
+void customBottomSheet(BuildContext context) {
   showModalBottomSheet(
     barrierColor: Colors.transparent,
-    elevation: 0,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(40.0)),
-    ),
-    backgroundColor: kColorTertiary,
+    backgroundColor: Colors.transparent,
     context: context,
     builder: (BuildContext context) {
       return Padding(
-        padding: const EdgeInsets.all(50.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.search),
-              title: const Text('بحث عن آية'),
-              onTap: () {
-                // الانتقال إلى صفحة البحث
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.navigate_next),
-              title: const Text('الانتقال إلى صفحة'),
-              onTap: () {
-                // فتح نافذة لتحديد الصفحة
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('إعدادات إضافية'),
-              onTap: () {
-                // فتح إعدادات أخرى
-              },
-            ),
-          ],
+        padding: const EdgeInsets.all(20.0),
+        child: Material(
+          elevation: 4,
+          borderRadius: BorderRadius.circular(10),
+          color: kColorSecondary,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 110,
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: kColorPrimary, width: 1),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(8),
+                        ),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.bookmark_add),
+                          SizedBox(
+                            width: 6,
+                          ),
+                          Text(' حفظ علامه '),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SearchAyahView()));
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 200,
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(18)),
+                          color: kColorPrimary,
+                        ),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(
+                              Icons.search,
+                              color: Colors.white,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              'ابحث عن ايه',
+                              style: TextStyle(
+                                  wordSpacing: 5,
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontFamily: 'cairo'),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(
+                thickness: 1,
+                height: 1,
+                endIndent: 4,
+                indent: 4,
+                color: kColorPrimary,
+              ),
+              ListTile(
+                leading: const Icon(Icons.content_paste_go_sharp),
+                title: const Text(
+                  '  التفسير الميسر للصفحه',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: 'cairo',
+                  ),
+                ),
+                onTap: () {
+                  print(normalise("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ"));
+                },
+              ),
+              const Divider(
+                thickness: 1,
+                height: 1,
+                endIndent: 4,
+                indent: 4,
+                color: kColorPrimary,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.navigate_next,
+                        size: 20,
+                      ),
+                      title: const Text(
+                        'الانتقال الي الصفحه',
+                        style: TextStyle(
+                            fontFamily: 'cairo',
+                            fontSize: 11,
+                            color: kColorPrimary,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        // فتح إعدادات أخرى
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.bookmark_rounded,
+                        size: 20,
+                      ),
+                      title: const Text(
+                        ' الانتقال للعلامه',
+                        style: TextStyle(
+                            fontFamily: 'cairo',
+                            fontSize: 11,
+                            color: kColorPrimary,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {
+                        // فتح إعدادات أخرى
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 55,
+                    child: VerticalDivider(
+                      color: kColorPrimary,
+                      thickness: 1, // سمك الخط
+                      width: 1, // المسافة الإجمالية
+                    ),
+                  ),
+                ],
+              ),
+              const Divider(
+                thickness: 1,
+                height: 1,
+                endIndent: 4,
+                indent: 4,
+                color: kColorPrimary,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.hourglass_full_outlined,
+                        size: 20,
+                      ),
+                      title: const Text(
+                        ' دعاء الخاتمه',
+                        style: TextStyle(
+                            color: kColorPrimary,
+                            fontFamily: 'cairo',
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 55,
+                    child: VerticalDivider(
+                      color: kColorPrimary,
+                      thickness: 1, // سمك الخط
+                      width: 1, // المسافة الإجمالية
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      title: const Text(
+                        ' المظهر الداكن',
+                        style: TextStyle(
+                            color: kColorPrimary,
+                            fontFamily: 'cairo',
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(
+                        Icons.nightlight_round_sharp,
+                        size: 20,
+                      ),
+                      onTap: () {},
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 55,
+                    child: VerticalDivider(
+                      color: kColorPrimary,
+                      thickness: 1, // سمك الخط
+                      width: 1, // المسافة الإجمالية
+                    ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.list_alt_rounded,
+                        size: 20,
+                      ),
+                      title: const Text(
+                        ' الفهرس',
+                        style: TextStyle(
+                            color: kColorPrimary,
+                            fontFamily: 'cairo',
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onTap: () {},
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       );
     },

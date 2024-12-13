@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:muslim/core/utils/constantes.dart';
+import 'package:muslim/core/utils/surah_name_list.dart';
 
 Widget evintCard(
     {int? lastReadPage,
@@ -20,7 +20,7 @@ Widget evintCard(
           onNavigateToQuran!(page);
         },
         child: Card(
-          color: kColorPrimary,
+          color: Colors.black38,
           margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
@@ -32,7 +32,6 @@ Widget evintCard(
             height: 170,
             // padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: kColorPrimary,
               borderRadius: BorderRadius.circular(20.0),
               boxShadow: [
                 BoxShadow(
@@ -109,7 +108,7 @@ Widget evintCard(
                         child: FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
-                            lastSurahName ?? 'لا توجد قرائه',
+                            lastSurahName ?? sortedList[0],
                             style: TextStyle(
                               fontFamily: 'Qk',
                               fontSize: 150,

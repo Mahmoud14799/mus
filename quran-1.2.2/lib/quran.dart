@@ -507,12 +507,16 @@ String getVerseTranslation(int surahNumber, int verseNumber,
 ///```
 Map searchWords(String words) {
   List<Map> result = [];
-// print(words);
+  print(words);
 
   if (result.isEmpty) {
     for (var i in quranText) {
       if (i['content'].toString().toLowerCase().contains(words.toLowerCase())) {
-        result.add({"surah": i["surah_number"], "verse": i["verse_number"]});
+        result.add({
+          "surah": i["surah_number"],
+          "verse": i["verse_number"],
+          "content": i['content'],
+        });
 
         // print(i['content']);
         // result.add({"surah": i["surah_number"], "verse": i["verse_number"]});

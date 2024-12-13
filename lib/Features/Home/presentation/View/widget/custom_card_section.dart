@@ -21,14 +21,14 @@ class CustomCardSection extends StatelessWidget {
         },
         child: Container(
           margin: const EdgeInsetsDirectional.fromSTEB(15, 15, 15, 15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: const Color(0xff14453c),
-          ),
           child: GridTile(
             footer: Container(
+              decoration: BoxDecoration(
+                  color: const Color(0xffdbb859).withOpacity(.7),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(8),
+                  )),
               alignment: Alignment.center,
-              color: const Color(0xffdbb859).withOpacity(.7),
               width: double.infinity,
               height: 30,
               child: Text(title,
@@ -44,7 +44,7 @@ class CustomCardSection extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(8), topRight: Radius.circular(8)),
-                color: kColorPrimary.withOpacity(.2),
+                color: Colors.black38.withOpacity(.05),
               ),
               child: Image.asset(
                 scale: .5,

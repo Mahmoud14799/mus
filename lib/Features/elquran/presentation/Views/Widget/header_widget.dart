@@ -34,9 +34,7 @@ class HeaderWidget extends StatelessWidget {
                   "اياتها\n${getVerseCount(e["surah"])}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      fontSize: 8,
-                      fontFamily: "UthmanicHafs13",
-                      color: Colors.white70),
+                      fontSize: 8, fontFamily: "cairo", color: Colors.white70),
                 ),
                 Center(
                     child: RichText(
@@ -53,9 +51,7 @@ class HeaderWidget extends StatelessWidget {
                   "ترتيبها\n${e["surah"]}",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 8,
-                      fontFamily: "UthmanicHafs13"),
+                      color: Colors.white70, fontSize: 8, fontFamily: "cairo"),
                 ),
               ],
             ),
